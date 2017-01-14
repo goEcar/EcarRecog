@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+
+    <dimen name="ldrawer_drawableSize">50dp</dimen>
+    <dimen name="ldrawer_barSize">18dp</dimen>
+    <dimen name="ldrawer_barSize_smaller">17dp</dimen>
+    <dimen name="ldrawer_topBottomBarArrowSize">11dp</dimen>
+    <dimen name="ldrawer_thickness">2dp</dimen>
+    <dimen name="ldrawer_gapBetweenBars">3dp</dimen>
+    <dimen name="ldrawer_middleBarArrowSize">16dp</dimen>
+    <dimen name="navdrawer_width">260dp</dimen>
+    <dimen name="activity_horizontal_margin">16.0dip</dimen>
+    <dimen name="activity_vertical_margin">16.0dip</dimen>
+    <dimen name="group_bar_padding">14.0dip</dimen>
+    <dimen name="text_large">20.0sp</dimen>
+    <dimen name="text_middle">18.0sp</dimen>
+    <dimen name="text_middles">17.0sp</dimen>
+    <dimen name="text_content">16.0sp</dimen>
+    <dimen name="text_contents">15.0sp</dimen>
+    <dimen name="text_low">14.0sp</dimen>
+    <dimen name="text_lower">13.0sp</dimen>
+    <dimen name="text_small">12.0sp</dimen>
+      <dimen name="text_smaller">11.0sp</dimen>
+    <dimen name="text_little">12.0dip</dimen>
+    <dimen name="pay_margin">10dip</dimen>
+    <dimen name="padding_small">5dip</dimen>
+    <dimen name="padding_middle">10dip</dimen>
+    <dimen name="padding_large">20dip</dimen>
+    <dimen name="near_sex">15dip</dimen>
+    <dimen name="user_set_height">45dip</dimen>
+    <dimen name="save_amont_option">50dp</dimen>
+    <dimen name="avatar_huge">65dp</dimen>
+    <dimen name="avatar_class">60dp</dimen>
+    <dimen name="avatar_large">50dp</dimen>
+    <dimen name="avatar_middle">40dp</dimen>
+    <dimen name="avatar_little">30dp</dimen>
+    <dimen name="imageview_border_width">1dp</dimen>
+    <dimen name="list_item_circleImageView">40dip</dimen>
+    <dimen name="no_wifi_set_button">100dip</dimen>
+    <dimen name="pop_window_height">280dip</dimen>
+    <dimen name="doctor_details_book_button_width">105dip</dimen>
+    <dimen name="doctor_details_book_button_height">33dip</dimen>
+    <dimen name="button_height">40dip</dimen>
+    <dimen name="edittext_corner">5dip</dimen>
+    <dimen name="menu_item_height">45dp</dimen>
+    
+
+</resources>
