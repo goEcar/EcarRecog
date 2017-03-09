@@ -27,25 +27,23 @@ import android.app.Service;
 import android.content.Context;
 import android.content.res.Resources;
 import android.hardware.Camera;
-import android.os.Environment;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.chmtech.lpr.LPR;
+import com.util.CityCodeUtil;
+import com.util.Consts;
+import com.util.EncryptionUtil;
+import com.util.RecogFileUtil;
+import com.util.SpUtil;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Random;
-
-import com.chmtech.lpr.LPR;
-import com.util.CityCodeUtil;
-import com.util.Consts;
-import com.util.EncryptionUtil;
-import com.util.FileUtil;
-import com.util.SpUtil;
 
 public class RecogHelper {
     private static RecogHelper recogHelper;
@@ -85,14 +83,7 @@ public class RecogHelper {
         //检查sp文件是否保存过权限信息
         isGetedPermition();
         //初始化识别算法
-        String sdDir = null;
-
-        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            sdDir = Environment.getExternalStorageDirectory().getPath();
-        }
-        if (sdDir == null) {
-            sdDir = Environment.getDataDirectory().getPath();
-        }
+        String sdDir = RecogFileUtil.getSdPatch(mContext);
 
         if (sdDir == null) {
             Toast.makeText(mContext, "找不到存储路径", Toast.LENGTH_LONG).show();
@@ -119,12 +110,12 @@ public class RecogHelper {
         if (!en.exists() || !en.exists() || !en_num.exists()) {
             Resources res = mContext.getResources();
             try {
-                FileUtil.writeModelFile(res.getAssets().open("en.model"), en);
-                FileUtil.writeModelFile(res.getAssets().open("en_num.model"), zh);
-                FileUtil.writeModelFile(res.getAssets().open("zh.model"), en_num);
-//                FileUtil.writeModelFile(res.openRawResource(R.raw.en), en);
-//                FileUtil.writeModelFile(res.openRawResource(R.raw.zh), zh);
-//                FileUtil.writeModelFile(res.openRawResource(R.raw.en_num), en_num);
+                RecogFileUtil.writeModelFile(res.getAssets().open("en.model"), en);
+                RecogFileUtil.writeModelFile(res.getAssets().open("en_num.model"), zh);
+                RecogFileUtil.writeModelFile(res.getAssets().open("zh.model"), en_num);
+//                RecogFileUtil.writeModelFile(res.openRawResource(R.raw.en), en);
+//                RecogFileUtil.writeModelFile(res.openRawResource(R.raw.zh), zh);
+//                RecogFileUtil.writeModelFile(res.openRawResource(R.raw.en_num), en_num);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -155,11 +146,11 @@ public class RecogHelper {
                 return Consts.RECOG_PERMITION;
             }
             //文件比对
-            String sdDir = FileUtil.getSdPath();
+            String sdDir = RecogFileUtil.getSdPatch(mContext);
             TelephonyManager tm = (TelephonyManager) mContext.getSystemService(Service.TELEPHONY_SERVICE);
             try {
                 String imeiSha = EncryptionUtil.getSHA(tm.getDeviceId());
-                String fileSha = FileUtil.getString(sdDir + Consts.SPATH);
+                String fileSha = RecogFileUtil.getString(sdDir + Consts.SPATH);
                 if (TextUtils.isEmpty(imeiSha) || TextUtils.isEmpty(fileSha) || !imeiSha.equals(fileSha)) {
                     recogToken.permitionFail();
                     Consts.RECOG_PERMITION = false;
@@ -361,7 +352,6 @@ public class RecogHelper {
 //        }
 //}
 //    }
-
     public synchronized void getCarnum(final byte[] data, final Camera camera, final RecogResult recogToken) {
         synchronized (recogHelper.getClass()) {
             if (permitionCheck(recogToken)) {
@@ -419,6 +409,84 @@ public class RecogHelper {
                         Consts.platenum = platenum;
                         recogToken.recogSuccess(platenum, data);
                         tempCarnum = "";
+                    } else {
+                        Consts.orgdata = null;
+                        Consts.orgw = 0;
+                        Consts.orgh = 0;
+                        recogToken.recogFail();
+                        tempCarnum = isNumber(platenum) ? platenum : tempCarnum;//初始化中间车牌
+                        Log.d("number3", "匹配" + (!TextUtils.isEmpty(platenum) ? platenum.substring(0, MATCHING_LENG) : "") + "  " + tempCarnum);
+                    }
+                }
+            }
+        }
+    }
+    /****************************************
+     方法描述：使用时间限制来获取车牌
+     @param  maxTime 识别时长 单位秒
+     @return
+     ****************************************/
+
+    public synchronized void getCarnumByTime(final byte[] data, final Camera camera, final RecogResult recogToken,int maxTime) {
+        synchronized (recogHelper.getClass()) {
+            if (permitionCheck(recogToken)) {
+
+                if (data != null) {
+                    Consts.orgdata = data;
+                    //加密
+                    int width = camera.getParameters().getPreviewSize().width;
+                    int height = camera.getParameters().getPreviewSize().height;
+                    int location = random.nextInt(EncryptionUtil.getLocation(EncryptionUtil.MYRECOG_SCOPE));
+                    if (data.length > location) {
+                        int mloc = EncryptionUtil.getLocation(EncryptionUtil.MYRECOG_LOC);
+                        int value = EncryptionUtil.getLocation(EncryptionUtil.MYRECOG_VALUE);
+                        data[mloc] = (byte) location;
+                        data[location] = (byte) value;
+                    } else {
+                        recogToken.recogFail();
+                        return;
+                    }
+
+                    String platenum = "";
+                    try {
+                        LPR.locate(width, height, data); //0-255
+                        platenum = new String(LPR.getplate(0), "GBK").trim();
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+
+//                Log.d("number1", TextUtils.isEmpty(platenum) ? "返回空  " : platenum + "正确率="+scope);
+
+                    //第一次不往下走
+                    if (!isPic
+                            && TextUtils.isEmpty(tempCarnum.trim())
+                            && isNumber(platenum)) {
+                        tempCarnum = platenum.trim();
+                        recogToken.recogFail();
+                        Log.d("number2", "第一次获取 tempnum=" + tempCarnum);
+                        return;
+                    }
+
+                    boolean getedSuccess;//车牌是否获取成功
+                    if (isPic) {
+                        getedSuccess = isNumber(platenum);
+                    } else {
+                        getedSuccess = ((isNumber(platenum) && tempCarnum.equals(platenum)) )
+                                ||(!TextUtils.isEmpty(platenum)&&(System.currentTimeMillis()-time)/1000>=maxTime);   //超过时间限制
+                        Log.d("number2", getedSuccess ? platenum : "返回空" + "\nplatenum=" + platenum + "\ntempnum=" + tempCarnum);
+                    }
+
+                    if (getedSuccess) {
+                        Consts.orgw = width;
+                        Consts.orgh = height;
+                        Consts.speep = (System.currentTimeMillis() - time) / 1000.0f;
+                        time = System.currentTimeMillis();
+                        Consts.platenum = platenum;
+                        recogToken.recogSuccess(platenum, data);
+                        tempCarnum = "";
+
                     } else {
                         Consts.orgdata = null;
                         Consts.orgw = 0;
