@@ -19,6 +19,7 @@ import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.util.RecogFileUtil;
 import com.wintone.plateid.PlateRecognitionParameter;
 import com.wintone.plateid.RecogService;
 
@@ -29,7 +30,6 @@ import java.util.TimerTask;
 
 import com.Helper.RecogHelper;
 import com.util.Consts;
-import com.util.FileUtil;
 import com.util.MemoryUtil;
 import com.util.ViewfinderView;
 import recognition.ecar.com.ecarrecog.anotation.DebugLog;
@@ -207,7 +207,7 @@ public class MemoryCameraActivity extends Activity implements SurfaceHolder.Call
 
         @Override
         public String saveImage(byte[] data) {
-            FileUtil.saveBitmap();
+            RecogFileUtil.saveBitmap();
             return "";
         }
     }
@@ -253,7 +253,7 @@ public class MemoryCameraActivity extends Activity implements SurfaceHolder.Call
                 Consts.orgw = mCamera.getParameters().getPreviewSize().width;
                 Consts.orgh = mCamera.getParameters().getPreviewSize().height;
                 Toast.makeText(MemoryCameraActivity.this, "正在保存~", Toast.LENGTH_SHORT).show();
-                FileUtil.saveBitmap();
+                RecogFileUtil.saveBitmap();
                 Toast.makeText(MemoryCameraActivity.this, "保存成功！", Toast.LENGTH_SHORT).show();
             }
         });

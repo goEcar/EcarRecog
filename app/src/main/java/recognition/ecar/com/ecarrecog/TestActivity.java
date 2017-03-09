@@ -21,7 +21,8 @@ import java.util.List;
 
 import com.Helper.RecogHelper;
 import com.util.Consts;
-import com.util.FileUtil;
+import com.util.RecogFileUtil;
+
 import recognition.ecar.com.ecarrecog.anotation.DebugLog;
 import tfcard.wintone.ecar.R;
 
@@ -80,7 +81,7 @@ public class TestActivity extends Activity {
 
 
 
-        if ((bitmap= FileUtil.saveBitmap())==null) {
+        if ((bitmap= RecogFileUtil.saveBitmap())==null) {
 //            return ;  //保存图片
         } else{
             iv_clip.setImageBitmap(bitmap);

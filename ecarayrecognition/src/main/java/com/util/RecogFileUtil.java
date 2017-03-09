@@ -211,7 +211,7 @@ public class RecogFileUtil {
      * @param bitmap
      */
     public static void saveBitmap(String filepath, Bitmap bitmap) {
-        if (!isExternalStorageWritable()) {
+        if (TextUtils.isEmpty(filepath)) {
             Log.i(TAG, "SD卡不可用，保存失败");
             return;
         }
@@ -223,12 +223,14 @@ public class RecogFileUtil {
         try {
             File file = new File(filepath);
             FileOutputStream outputstream = new FileOutputStream(file);
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputstream);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 40, outputstream);
             outputstream.flush();
             outputstream.close();
         } catch (FileNotFoundException e) {
             Log.i(TAG, e.getMessage());
         } catch (IOException e) {
+            Log.i(TAG, e.getMessage());
+        } catch (Exception e) {
             Log.i(TAG, e.getMessage());
         }
     }
@@ -695,10 +697,10 @@ public class RecogFileUtil {
             File imgFile = new File(Consts.IMAGGE_DIR, fileName);
             saveBitmap(imgFile.getPath(), bitmap);
 
-            if (bitmap != null && !bitmap.isRecycled()) {
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 40, new FileOutputStream(imgFile));
-            }
-        } catch (FileNotFoundException e) {
+//            if (bitmap != null && !bitmap.isRecycled()) {
+//                bitmap.compress(Bitmap.CompressFormat.JPEG, 40, new FileOutputStream(imgFile));
+//            }
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return bitmap;
