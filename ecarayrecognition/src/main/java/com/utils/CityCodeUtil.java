@@ -1,15 +1,10 @@
-package com.util;
+package com.utils;
 
 import android.content.Context;
 
-import java.util.HashMap;
+import com.util.TagUtil;
 
-/*************************************
- * 功能：
- * 创建者： kim_tony
- * 创建日期：2017/1/14
- * 版权所有：深圳市亿车科技有限公司
- *************************************/
+import java.util.HashMap;
 
 public class CityCodeUtil {
     private static HashMap<String, Integer> codeMaps;//城市code集合

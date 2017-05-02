@@ -40,7 +40,9 @@
             android:id="@+id/btn_pic"
             android:layout_width="match_parent"
             android:layout_height="42dp"
+            android:layout_marginLeft="5dp"
             android:layout_weight="1"
+            android:background="@color/backgrey"
             android:text="拍照"
             android:textColor="@android:color/black" />
 
@@ -48,7 +50,10 @@
             android:id="@+id/btn_video"
             android:layout_width="match_parent"
             android:layout_height="42dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:layout_weight="1"
+            android:background="@color/backgrey"
             android:text="视频"
             android:textColor="@android:color/black" />
     </LinearLayout>

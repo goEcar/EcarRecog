@@ -18,7 +18,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import recognition.ecar.com.ecarayrecognition.BuildConfig;
+import tfcard.wintone.ecar.BuildConfig;
+
 
 /**
  * UncaughtException处理类,当程序发生Uncaught异常的时候,有该类来接管程序,并记录发送错误报告.

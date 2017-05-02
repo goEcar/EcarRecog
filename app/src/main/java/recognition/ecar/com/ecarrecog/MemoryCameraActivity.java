@@ -19,7 +19,9 @@ import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.util.RecogFileUtil;
+import com.Helper.RecogResult;
+import com.ecaray.wintonlib.RecogniteHelper4WT;
+import com.utils.RecogFileUtil;
 import com.wintone.plateid.PlateRecognitionParameter;
 import com.wintone.plateid.RecogService;
 
@@ -29,12 +31,11 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import com.Helper.RecogHelper;
-import com.util.Consts;
-import com.util.MemoryUtil;
-import com.util.ViewfinderView;
+import com.utils.Consts;
+import com.utils.MemoryUtil;
+import com.utils.ViewfinderView;
 import recognition.ecar.com.ecarrecog.anotation.DebugLog;
 import tfcard.wintone.ecar.R;
-import tfcard.wintone.ecar.com.tfcardlib.RecogniteHelper4WT;
 
 
 
@@ -181,8 +182,8 @@ public class MemoryCameraActivity extends Activity implements SurfaceHolder.Call
 
     //初始化时间
     private void initTime() {
-        if (time == 0)
-            time = System.currentTimeMillis();
+//        if (time == 0)
+//            time = System.currentTimeMillis();
     }
 
 
@@ -193,7 +194,7 @@ public class MemoryCameraActivity extends Activity implements SurfaceHolder.Call
 
         @Override
         public void onGeted(String fileName, String carPlate) {
-            Consts.speep = (System.currentTimeMillis() - time) / 1000.0f;
+//            Consts.speed = (System.currentTimeMillis() - time) / 1000.0f;
             time = System.currentTimeMillis();
             Consts.platenum = carPlate;
 
@@ -273,7 +274,7 @@ public class MemoryCameraActivity extends Activity implements SurfaceHolder.Call
                         return;
                     }
                     surfaceView.setClickable(false);
-                    recogHelper.getCarnum(Consts.orgdata, mCamera, new RecogHelper.RecogResult() {
+                    recogHelper.getCarnum(Consts.orgdata, mCamera, new RecogResult() {
                         @Override
                         public void recogSuccess(String carPlate, byte[] picData) {
                             Intent intent = new Intent(MemoryCameraActivity.this, TestActivity.class);
@@ -405,7 +406,7 @@ public class MemoryCameraActivity extends Activity implements SurfaceHolder.Call
 
         } else {
 //        camera.stopPreview();
-            recogHelper.getCarnum(data, camera, new RecogHelper.RecogResult() {
+            recogHelper.getCarnum(data, camera, new RecogResult() {
                 @Override
                 public void recogSuccess(String carPlate, byte[] picData) {
 
@@ -417,7 +418,7 @@ public class MemoryCameraActivity extends Activity implements SurfaceHolder.Call
                     MemoryCameraActivity.this.finish();
 
                     //无限次识别
-//                recogHelper=RecogHelper.getDefault(MemoryCameraActivity.this,true);
+//                recogHelper=RecogHelperSafe.getDefault(MemoryCameraActivity.this,true);
 //                Toast.makeText(MemoryCameraActivity.this, "车牌号 ="+carPlate, Toast.LENGTH_SHORT).show();
 
                 }

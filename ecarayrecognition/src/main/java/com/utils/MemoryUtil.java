@@ -1,4 +1,4 @@
-package com.util;
+package com.utils;
 
 import android.app.ActivityManager;
 import android.content.Context;
@@ -17,11 +17,11 @@ import java.io.IOException;
  * <p>
  * 作者:
  * <p>
- * 版权所有:深圳市亿车科技有限公司
+ *
  * <p>
  * 创建日期: ${date} ${time}
  * <p>
- * 修改人:   金征
+ *
  * <p>
  * 修改时间:  ${date} ${time}
  * <p>

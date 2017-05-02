@@ -1,4 +1,4 @@
-package com.util;
+package com.utils;
 
 import android.app.Activity;
 import android.content.Context;
@@ -12,6 +12,8 @@ import android.os.Environment;
 import android.os.storage.StorageManager;
 import android.text.TextUtils;
 import android.util.Log;
+
+import com.util.ImageUtils;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -31,7 +33,7 @@ import java.util.Date;
 import java.util.zip.CRC32;
 import java.util.zip.CheckedInputStream;
 
-import static com.util.Consts.platenum;
+import static com.utils.Consts.platenum;
 
 
 public class RecogFileUtil {
@@ -689,7 +691,7 @@ public class RecogFileUtil {
             String fileName = strToDateLong(System.currentTimeMillis()) +
                     platenum.trim() + " " +
                     Consts.recogingDegger + "次 " +
-                    Consts.speep + "秒" +
+                    Consts.speed + "秒" +
                     ".jpg";
 
 

@@ -20,8 +20,8 @@ import com.mylhyl.acp.AcpOptions;
 import java.util.List;
 
 import com.Helper.RecogHelper;
-import com.util.Consts;
-import com.util.RecogFileUtil;
+import com.utils.Consts;
+import com.utils.RecogFileUtil;
 
 import recognition.ecar.com.ecarrecog.anotation.DebugLog;
 import tfcard.wintone.ecar.R;
@@ -39,12 +39,8 @@ public class TestActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        getActionBar().hide();
         setContentView(R.layout.activity_main);
         initPermition();
-
-
     }
 
 
@@ -89,7 +85,7 @@ public class TestActivity extends Activity {
 
         tv_plate.setBackgroundColor(Color.WHITE);
         tv_plate.setTextColor(Color.RED);
-        tv_plate.setText(Consts.platenum+"     速度："+Consts.speep+"s");
+        tv_plate.setText(Consts.platenum+"     速度："+Consts.speed +"s");
         btn_pic.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {

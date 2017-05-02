@@ -1,4 +1,4 @@
-package com.util;
+package com.utils;
 
 public class Consts {
     public static final String SPATH ="/.dir/key/key.txt" ;//加密文件路径
@@ -17,7 +17,7 @@ public class Consts {
     public static int orgw;
     public static int orgh;
 
-    public static float speep;//识别速度
+    public static float speed;//识别速度
     public static String platenum;//车牌号
     public static int  recogingDegger;  //识别次数
 

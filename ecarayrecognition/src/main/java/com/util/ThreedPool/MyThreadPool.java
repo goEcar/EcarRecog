@@ -8,11 +8,11 @@ package com.util.ThreedPool;
  *
  * 作者:
  *
- * 版权所有:深圳市亿车科技有限公司
+ *
  *
  * 创建日期: ${date} ${time}
  *
- * 修改人:   金征
+ *
  *
  * 修改时间:  ${date} ${time} 
  *

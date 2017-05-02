@@ -1,4 +1,4 @@
-package com.chmtech.lpr;
+package com;
 
 public class LPR {
 	static {

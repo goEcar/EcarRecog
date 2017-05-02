@@ -90,4 +90,10 @@ public class EncryptionUtil {
 		}
 		return result;
 	}
+	public static void setPoint(byte[] data, int location) {
+		int mloc = EncryptionUtil.getLocation(EncryptionUtil.MYRECOG_LOC);
+		int value = EncryptionUtil.getLocation(EncryptionUtil.MYRECOG_VALUE);
+		data[mloc] = (byte) location;
+		data[location] = (byte) value;
+	}
 }

@@ -1,6 +1,8 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.antfortune.freeline'
 
+
+
 buildscript {
     repositories {
         mavenCentral()
@@ -11,22 +13,65 @@ buildscript {
 }
 android {
     compileSdkVersion 24
-    buildToolsVersion '25.0.1'
+    buildToolsVersion '25.0.2'
 
     defaultConfig {
         applicationId "tfcard.wintone.ecar"
         minSdkVersion 15
         targetSdkVersion 21
         versionCode 1
-        versionName "1.0"
+        versionName "1.1"
         ndk {
             abiFilters "armeabi", "armeabi-v7a", "x86", "LPR"
         }
     }
-    buildTypes {
+
+    signingConfigs {
+        debug {
+            v2SigningEnabled false
+            keyAlias "test"
+            keyPassword  "123456"
+            storeFile    new File(getProjectDir().absolutePath+"/buildsystem/YCDEVELOP.jks")
+            storePassword "123456"//密钥库的密码
+        }
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            v2SigningEnabled false
+            storeFile    new File(getProjectDir().absolutePath+"/buildsystem/YCDEVELOP.jks")
+            keyAlias "test"
+            keyPassword  "123456"
+            storePassword "123456"//密钥库的密码
+        }
+
+    }
+
+    buildTypes {
+        debug {
+            def isMinifyEnabled = false;//混淆（打正式包）
+            debuggable true
+            minifyEnabled isMinifyEnabled
+            zipAlignEnabled isMinifyEnabled
+            shrinkResources isMinifyEnabled
+
+            //加载默认混淆配置文件
+            if (isMinifyEnabled) {
+                proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-android.txt'
+            }
+            signingConfig signingConfigs.release
+
+        }
+
+        release {
+            def isMinifyEnabled = false;//混淆（打正式包）
+            debuggable true
+            minifyEnabled isMinifyEnabled
+            zipAlignEnabled isMinifyEnabled
+            shrinkResources isMinifyEnabled
+            //加载默认混淆配置文件
+            if (isMinifyEnabled) {
+                proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-android.txt'
+            }
+            signingConfig signingConfigs.release
+
         }
     }
     sourceSets {
@@ -34,8 +79,8 @@ android {
             jniLibs.srcDirs = ['libs']
             assets.srcDirs = ['assets']
         }
-
     }
+
 
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES.txt'
@@ -58,6 +103,7 @@ android {
     }
 }
 
+
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:24.1.1'
@@ -65,7 +111,8 @@ dependencies {
     //    compile(name: 'ecarrecoglib-release', ext: 'aar')
     //aop框架
     compile 'com.github.goEcar:EcarAspectJ:1.0.0'
-    compile 'com.github.goEcar:EcarWintoneTFcard:1.0.1'
+    compile 'com.github.goEcar:EcarWintoneTFcard:latest.release'
+    compile 'com.github.goEcar:EcarBugly:latest.release'
     compile project(':ecarayrecognition')
 }
 

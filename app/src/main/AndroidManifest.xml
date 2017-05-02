@@ -57,11 +57,12 @@
 
 
     <application
-        android:allowBackup="true"
+        android:name="recognition.ecar.com.ecarrecog.mApplication"
         android:configChanges="keyboardHidden|orientation"
         android:icon="@drawable/ic_launcher"
         android:largeHeap="true"
         android:label="@string/app_name"
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         >
 
         <activity
@@ -78,7 +79,6 @@
             android:screenOrientation="nosensor">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
