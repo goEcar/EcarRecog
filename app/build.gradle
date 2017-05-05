@@ -30,15 +30,15 @@ android {
         debug {
             v2SigningEnabled false
             keyAlias "test"
-            keyPassword  "123456"
-            storeFile    new File(getProjectDir().absolutePath+"/buildsystem/YCDEVELOP.jks")
+            keyPassword "123456"
+            storeFile new File(getProjectDir().absolutePath + "/buildsystem/YCDEVELOP.jks")
             storePassword "123456"//密钥库的密码
         }
         release {
             v2SigningEnabled false
-            storeFile    new File(getProjectDir().absolutePath+"/buildsystem/YCDEVELOP.jks")
+            storeFile new File(getProjectDir().absolutePath + "/buildsystem/YCDEVELOP.jks")
             keyAlias "test"
-            keyPassword  "123456"
+            keyPassword "123456"
             storePassword "123456"//密钥库的密码
         }
 
@@ -61,7 +61,7 @@ android {
         }
 
         release {
-            def isMinifyEnabled = false;//混淆（打正式包）
+            def isMinifyEnabled = true;//混淆（打正式包）
             debuggable true
             minifyEnabled isMinifyEnabled
             zipAlignEnabled isMinifyEnabled
