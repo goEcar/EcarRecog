@@ -34,9 +34,9 @@ import com.Helper.RecogHelper;
 import com.utils.Consts;
 import com.utils.MemoryUtil;
 import com.utils.ViewfinderView;
+
 import recognition.ecar.com.ecarrecog.anotation.DebugLog;
 import tfcard.wintone.ecar.R;
-
 
 
 /**
@@ -89,7 +89,7 @@ public class MemoryCameraActivity extends Activity implements SurfaceHolder.Call
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        recogHelper = RecogHelper.getDefault(this, true,"川");
+        recogHelper = RecogHelper.getDefault(this, true, "川");
 
         int uiRot = getWindowManager().getDefaultDisplay().getRotation();
 
@@ -354,18 +354,18 @@ public class MemoryCameraActivity extends Activity implements SurfaceHolder.Call
             initCamera(holder, rotation);
             re.removeView(myview);
             re.addView(myview);
-            Timer time = new Timer();
-            if (timer != null) {
-                timer.cancel();
-            }
-            timer = new TimerTask() {
-                public void run() {
-                    if (mCamera != null) {
-                        focus();
-                    }
-                }
-            };
-            time.schedule(timer, 10, 800);
+//            Timer time = new Timer();
+//            if (timer != null) {
+//                timer.cancel();
+//            }
+//            timer = new TimerTask() {
+//                public void run() {
+//                    if (mCamera != null) {
+//                        focus();
+//                    }
+//                }
+//            };
+//            time.schedule(timer, 10, 800);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e) {
@@ -403,17 +403,13 @@ public class MemoryCameraActivity extends Activity implements SurfaceHolder.Call
         }
         if (Consts.IS_WENTONG) {
             useWTRecognition(data, camera);
-
         } else {
-//        camera.stopPreview();
             recogHelper.getCarnum(data, camera, new RecogResult() {
                 @Override
                 public void recogSuccess(String carPlate, byte[] picData) {
 
                     //识别一次
                     Intent intent = new Intent(MemoryCameraActivity.this, TestActivity.class);
-//			         	Toast.makeText(this, "识别 " + i + "次,用时：" + (System.nanoTime() - start) / Math.pow(10, 6) + "ms", Toast.LENGTH_SHORT).show();
-//				        Toast.makeText(this, "focus :" + f, Toast.LENGTH_SHORT).show();
                     startActivity(intent);
                     MemoryCameraActivity.this.finish();
 
@@ -425,7 +421,6 @@ public class MemoryCameraActivity extends Activity implements SurfaceHolder.Call
 
                 @Override
                 public void recogFail() {
-//                Toast.makeText(MemoryCameraActivity.this, "识别失败 -1", Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
@@ -447,23 +442,23 @@ public class MemoryCameraActivity extends Activity implements SurfaceHolder.Call
     @Override
     public void surfaceChanged(final SurfaceHolder holder, int format, int width, int height) {
 
-        if (mCamera != null) {
-            mCamera.autoFocus(new AutoFocusCallback() {
-                @Override
-                public void onAutoFocus(boolean success, Camera camera) {
-                    if (success) {
-                        synchronized (camera) {
-                            new Thread() {
-                                public void run() {
-                                    initCamera(holder, rotation);
-                                    super.run();
-                                }
-                            }.start();
-                        }
-                    }
-                }
-            });
-        }
+//        if (mCamera != null) {
+//            mCamera.autoFocus(new AutoFocusCallback() {
+//                @Override
+//                public void onAutoFocus(boolean success, Camera camera) {
+//                    if (success) {
+//                        synchronized (camera) {
+//                            new Thread() {
+//                                public void run() {
+//                                    initCamera(holder, rotation);
+//                                    super.run();
+//                                }
+//                            }.start();
+//                        }
+//                    }
+//                }
+//            });
+//        }
 
     }
 
@@ -530,9 +525,7 @@ public class MemoryCameraActivity extends Activity implements SurfaceHolder.Call
         parameters.setPreviewSize(preWidth, preHeight);
         recogHelper.openFlash(parameters);
         parameters.setWhiteBalance(Camera.Parameters.WHITE_BALANCE_CLOUDY_DAYLIGHT);
-        if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_AUTOFOCUS)) {
-            parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
-        }
+        parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
         mCamera.setParameters(parameters);
         if (rotation == 90 || rotation == 270) {
             if (width < 1080) {
@@ -545,20 +538,8 @@ public class MemoryCameraActivity extends Activity implements SurfaceHolder.Call
         }
 
         mCamera.setDisplayOrientation(r);
-
-        try {
-            mCamera.setPreviewDisplay(holder);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        mCamera.setPreviewCallback(this);
         mCamera.startPreview();
-        if (rotation == 90 || rotation == 270) {
-            if (width < 1080) {
-            }
-        } else {
-            if (height < 1080) {
-            }
-        }
     }
 
 
