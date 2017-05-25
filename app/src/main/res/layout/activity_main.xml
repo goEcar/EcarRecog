@@ -5,15 +5,25 @@
     android:layout_height="match_parent"
     android:background="#FFFFFF">
 
+    <Button
+        android:id="@+id/btn_cast"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_weight="1"
+        android:background="@color/backgrey"
+        android:text="分类"
+        android:visibility="gone"
+        android:textColor="@android:color/black" />
+
     <ImageView
         android:id="@+id/iv_clip"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:minHeight="120dp"
+        android:layout_height="300dp"
+        android:layout_centerInParent="true"
         android:scaleType="fitCenter"
-        android:src="@drawable/ic_launcher"/>
+        android:src="@drawable/ic_launcher" />
 
     <TextView
         android:id="@+id/tv_plate"
@@ -25,15 +35,15 @@
         android:gravity="center_horizontal"
         android:minHeight="80dp"
         android:text="车牌号"
-
         android:textColor="@android:color/darker_gray"
-        android:textSize="20sp"/>
+        android:textSize="20sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
         android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        android:paddingBottom="8dp"
         android:orientation="horizontal">
 
         <Button
@@ -44,7 +54,6 @@
             android:background="@color/backgrey"
             android:paddingLeft="5dp"
             android:text="拍照"
-            android:layout_marginBottom="8dp"
             android:textColor="@android:color/black" />
 
         <Button
@@ -58,4 +67,6 @@
             android:text="视频"
             android:textColor="@android:color/black" />
     </LinearLayout>
+
+
 </RelativeLayout>

@@ -12,6 +12,7 @@ android {
         ndk {
             abiFilters "armeabi", "armeabi-v7a", "x86", "LPR"
         }
+
     }
     sourceSets {
         main {
@@ -41,7 +42,7 @@ android {
     buildTypes {
 
         release {
-            def isMinifyEnabled = true;//混淆（打正式包）
+            def isMinifyEnabled = false;//混淆（打正式包）
             debuggable true
             minifyEnabled isMinifyEnabled
             zipAlignEnabled isMinifyEnabled

@@ -23,30 +23,26 @@ package com.Helper;
  *===============================================
  */
 
-import android.content.Context;
+import android.app.Application;
 import android.hardware.Camera;
 
 import com.safe.RecogHelperSafe;
-import com.utils.Consts;
 
-import static com.safe.RecogHelperSafe.tempCarnum;
-import static com.safe.RecogHelperSafe.time;
-
-public class RecogHelper {
-    protected static RecogHelper recogHelper;
+public class ComRecogHelper {
+    protected static ComRecogHelper recogHelper;
     static RecogHelperSafe recogHelperSafe;
     public static boolean isPic; //是否是照相模式
 
 
-    public RecogHelper(String cityName) {
+    public ComRecogHelper() {
     }
 
     //isInitConfig 是否初始化参数   相机页面一定要设为true否则无法识别
     //cityName  默认的第一个汉字 如：粤
-    public static synchronized RecogHelper getDefault(Context context, boolean isInitConfig, String cityName) {
-        synchronized (RecogHelper.class) {
+    public static synchronized ComRecogHelper getDefault(Application context, boolean isInitConfig, String cityName) {
+        synchronized (ComRecogHelper.class) {
             recogHelperSafe = RecogHelperSafe.getDefault(context, isInitConfig, cityName);
-            return recogHelper == null ? recogHelper = new RecogHelper(cityName) : recogHelper;
+            return recogHelper == null ? recogHelper = new ComRecogHelper() : recogHelper;
         }
     }
 

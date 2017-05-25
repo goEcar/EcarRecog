@@ -694,8 +694,6 @@ public class RecogFileUtil {
                     Consts.speed + "秒" +
                     ".jpg";
 
-
-            Log.d("fileName=", fileName);
             File imgFile = new File(Consts.IMAGGE_DIR, fileName);
             saveBitmap(imgFile.getPath(), bitmap);
 

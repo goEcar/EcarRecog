@@ -20,10 +20,12 @@ android {
         minSdkVersion 15
         targetSdkVersion 21
         versionCode 1
-        versionName "1.1"
+        versionName "1.2"
         ndk {
             abiFilters "armeabi", "armeabi-v7a", "x86", "LPR"
         }
+        buildConfigField "boolean", "isShowCast", "true" //是否显示转换按钮
+
     }
 
     signingConfigs {
@@ -61,7 +63,7 @@ android {
         }
 
         release {
-            def isMinifyEnabled = true;//混淆（打正式包）
+            def isMinifyEnabled = false;//混淆（打正式包）
             debuggable true
             minifyEnabled isMinifyEnabled
             zipAlignEnabled isMinifyEnabled
@@ -111,8 +113,13 @@ dependencies {
     //    compile(name: 'ecarrecoglib-release', ext: 'aar')
     //aop框架
     compile 'com.github.goEcar:EcarAspectJ:1.0.0'
-    compile 'com.github.goEcar:EcarWintoneTFcard:latest.release'
+    compile('com.github.goEcar:EcarWintoneSeria:1.0.8') {
+        exclude group: 'com.github.goEcar', module: 'EcarEncryption'
+    }
+    compile 'com.github.goEcar:EcarEncryption:latest.release'
+
     compile 'com.github.goEcar:EcarBugly:latest.release'
+    compile('com.github.goEcar:EcarNetFream:latest.release')
     compile project(':ecarayrecognition')
 }
 

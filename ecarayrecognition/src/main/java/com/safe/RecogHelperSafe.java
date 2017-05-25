@@ -1,7 +1,7 @@
 package com.safe;
 
+import android.app.Application;
 import android.app.Service;
-import android.content.Context;
 import android.content.res.Resources;
 import android.hardware.Camera;
 import android.telephony.TelephonyManager;
@@ -24,12 +24,12 @@ import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Random;
 
-import static com.Helper.RecogHelper.isPic;
+import static com.Helper.ComRecogHelper.isPic;
 
 public class RecogHelperSafe {
     private static final int DEFAULT_SCOPE = 85; //合格分数
     protected static RecogHelperSafe recogHelper;
-    public static Context mContext;
+    public static Application mContext;
 
 
     public Random random;
@@ -42,7 +42,7 @@ public class RecogHelperSafe {
 
     //isInitConfig 是否初始化参数   相机页面一定要设为true否则无法识别
     //cityName  默认的第一个汉字 如：粤
-    public static synchronized RecogHelperSafe getDefault(Context context, boolean isInitConfig, String cityName) {
+    public static synchronized RecogHelperSafe getDefault(Application context, boolean isInitConfig, String cityName) {
         synchronized (RecogHelperSafe.class) {
             if (isInitConfig)//初始化参数
                 initConfig();
@@ -66,6 +66,7 @@ public class RecogHelperSafe {
         //检查sp文件是否保存过权限信息
         isGetedPermition();
         //初始化识别算法
+
         String sdDir = RecogFileUtil.getSdPatch(mContext);
 
         if (sdDir == null) {
