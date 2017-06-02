@@ -16,7 +16,7 @@ android {
     buildToolsVersion '25.0.2'
 
     defaultConfig {
-        applicationId "tfcard.wintone.ecar"
+        applicationId "com.mine.recog"
         minSdkVersion 15
         targetSdkVersion 21
         versionCode 1
@@ -113,14 +113,11 @@ dependencies {
     //    compile(name: 'ecarrecoglib-release', ext: 'aar')
     //aop框架
     compile 'com.github.goEcar:EcarAspectJ:1.0.0'
-    compile('com.github.goEcar:EcarWintoneSeria:1.0.8') {
-        exclude group: 'com.github.goEcar', module: 'EcarEncryption'
-    }
+    compile('com.github.goEcar:EcarWintoneSeria:1.0.8')
     compile 'com.github.goEcar:EcarEncryption:latest.release'
-
     compile 'com.github.goEcar:EcarBugly:latest.release'
-    compile('com.github.goEcar:EcarNetFream:latest.release')
-    compile project(':ecarayrecognition')
+    compile 'com.github.goEcar:EcarNetFream:latest.release'
+    compile project(':mylibrary')
 }
 
 

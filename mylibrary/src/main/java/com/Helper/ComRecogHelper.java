@@ -27,6 +27,7 @@ import android.app.Application;
 import android.hardware.Camera;
 
 import com.safe.RecogHelperSafe;
+import com.utils.Consts;
 
 public class ComRecogHelper {
     protected static ComRecogHelper recogHelper;
@@ -45,29 +46,24 @@ public class ComRecogHelper {
             return recogHelper == null ? recogHelper = new ComRecogHelper() : recogHelper;
         }
     }
-
-
-    //初始化
-    private boolean init(String cityName) {
-        return recogHelperSafe.init(cityName);
+    //isInitConfig 是否初始化参数   相机页面一定要设为true否则无法识别
+    //cityName  默认的第一个汉字 如：粤
+    //isCheckRecog  true 检查权限
+    public static synchronized ComRecogHelper getDefault(Application context, boolean isInitConfig, String cityName,boolean isCheckRecog) {
+        Consts.IS_CHECK_PERMITION = isCheckRecog;
+        synchronized (ComRecogHelper.class) {
+            recogHelperSafe = RecogHelperSafe.getDefault(context, isInitConfig, cityName);
+            return recogHelper == null ? recogHelper = new ComRecogHelper() : recogHelper;
+        }
     }
 
-    /**
-     * 方法描述：检查权限
-     * <p/>
-     *
-     * @param
-     * @return
-     */
-    private boolean permitionCheck(RecogResult recogToken) {
-        return recogHelperSafe.permitionCheck(recogToken);
 
-    }
+
 
 
     //是否获取过权限
     private boolean isGetedPermition() {
-        return recogHelperSafe.isGetedPermition();
+        return recogHelperSafe.isCheckPermition();
     }
 
     //保存权限状态     flag：true  已获取

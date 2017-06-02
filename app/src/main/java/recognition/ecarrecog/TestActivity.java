@@ -1,4 +1,4 @@
-package recognition.ecar.com.ecarrecog;
+package recognition.ecarrecog;
 
 import android.Manifest;
 import android.app.Activity;
@@ -21,6 +21,8 @@ import android.widget.Toast;
 import com.Helper.ComRecogHelper;
 import com.ecaray.wintonlib.WintonRecogManager;
 import com.ecaray.wintonlib.helper.AuthHelper;
+import com.mine.recog.BuildConfig;
+import com.mine.recog.R;
 import com.mylhyl.acp.Acp;
 import com.mylhyl.acp.AcpListener;
 import com.mylhyl.acp.AcpOptions;
@@ -29,9 +31,7 @@ import com.utils.RecogFileUtil;
 
 import java.util.List;
 
-import recognition.ecar.com.ecarrecog.Helper.PicSaveHelper;
-import tfcard.wintone.ecar.BuildConfig;
-import tfcard.wintone.ecar.R;
+import recognition.Helper.PicSaveHelper;
 
 public class TestActivity extends Activity {
 

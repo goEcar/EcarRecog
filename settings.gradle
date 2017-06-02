@@ -1,1 +1,1 @@
-include ':app', ':ecarayrecognition'
+include ':app', ':mylibrary'

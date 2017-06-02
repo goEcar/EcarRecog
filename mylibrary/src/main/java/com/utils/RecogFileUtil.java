@@ -686,7 +686,7 @@ public class RecogFileUtil {
             bitmap = ImageUtils.GetBitmapFromYUV420SP(Consts.orgdata, Consts.orgw, Consts.orgh);
 
             if (TextUtils.isEmpty(Consts.platenum)) {
-                Consts.platenum = "none";
+                Consts.platenum = "识别失败";
             }
             String fileName = strToDateLong(System.currentTimeMillis()) +
                     platenum.trim() + " " +

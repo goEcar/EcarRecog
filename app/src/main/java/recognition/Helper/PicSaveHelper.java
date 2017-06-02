@@ -1,12 +1,10 @@
-package recognition.ecar.com.ecarrecog.Helper;
+package recognition.Helper;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.WindowManager;
-import android.widget.Toast;
 
 import com.ecaray.wintonlib.WintonRecogManager;
 import com.ecaray.wintonlib.helper.RecogniteHelper4WT;
@@ -20,7 +18,6 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import static android.R.attr.width;
 import static com.safe.RecogHelperSafe.mContext;
 
 

@@ -1,8 +1,7 @@
-package recognition.ecar.com.ecarrecog;
+package recognition.ecarrecog;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.hardware.Camera;
 import android.hardware.Camera.AutoFocusCallback;
@@ -22,6 +21,7 @@ import com.Helper.ComRecogHelper;
 import com.Helper.RecogResult;
 import com.ecaray.wintonlib.WintonRecogManager;
 import com.ecaray.wintonlib.helper.RecogniteHelper4WT;
+import com.mine.recog.R;
 import com.utils.Consts;
 import com.utils.MemoryUtil;
 import com.utils.RecogFileUtil;
@@ -29,7 +29,6 @@ import com.utils.ViewfinderView;
 
 import java.util.List;
 
-import tfcard.wintone.ecar.R;
 
 
 /**
@@ -73,14 +72,13 @@ public class MemoryCameraActivity extends Activity implements SurfaceHolder.Call
     private boolean isSuccess; //是否获取成功
     private Camera.Parameters parameters;
     private ComRecogHelper recogHelper;
-    //文通
     WintonRecogManager wintonHelper;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        recogHelper = ComRecogHelper.getDefault(getApplication(), true, "粤");
+        recogHelper = ComRecogHelper.getDefault(getApplication(), true, "粤",false);
         Consts.IS_WENTONG=false;
         if (Consts.IS_WENTONG) {
             wintonHelper = WintonRecogManager.getInstance();
