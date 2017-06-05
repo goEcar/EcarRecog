@@ -16,6 +16,6 @@ public class mApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-//        BuglyUtil.init(this, "fb3349aa66", false,BuildConfig.VERSION_NAME,false); // appid初始化
+        BuglyUtil.init(this, "fb3349aa66", false,BuildConfig.VERSION_NAME,false); // appid初始化
     }
 }
