@@ -156,13 +156,13 @@ public class PicSaveHelper {
                              RecogniteHelper4WT.OnResult getted,
                              String path,
                              int width, int hight) {
-        WintonRecogManager.getInstance().useWTRecognitionByPic(
-                activity,
-                path,
-                getted,
-                width,
-                hight
-        );
+//        WintonRecogManager.getInstance().useWTRecognitionByPic(
+//                activity,
+//                path,
+//                getted,
+//                width,
+//                hight
+//        );
 
     }
 

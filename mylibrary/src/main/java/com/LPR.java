@@ -15,7 +15,4 @@ public class LPR {
 	public static native byte[] getplate(int index);
 	//可信度
 	public static native int getplatescore(int index);
-
-
-	
 }

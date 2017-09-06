@@ -80,11 +80,11 @@ public class MemoryCameraActivity extends Activity implements SurfaceHolder.Call
         super.onCreate(savedInstanceState);
         recogHelper = ComRecogHelper.getDefault(getApplication(), true, "粤",false);
         Consts.IS_WENTONG=false;
-        if (Consts.IS_WENTONG) {
-            wintonHelper = WintonRecogManager.getInstance();
-            wintonHelper.setStop(false);
-            wintonHelper.bind(MemoryCameraActivity.this);
-        }
+//        if (Consts.IS_WENTONG) {
+//            wintonHelper = WintonRecogManager.getInstance();
+//            wintonHelper.setStop(false);
+//            wintonHelper.bind(MemoryCameraActivity.this);
+//        }
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);//
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);

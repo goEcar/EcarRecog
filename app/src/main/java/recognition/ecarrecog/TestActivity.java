@@ -73,7 +73,7 @@ public class TestActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (TextUtils.isEmpty(AuthHelper.seriaNumber)) {
-            WintonRecogManager.getInstance().auth(this, Consts.IS_WENTONG);
+            //WintonRecogManager.getInstance().auth(this, Consts.IS_WENTONG);
         }
 
 
@@ -94,7 +94,7 @@ public class TestActivity extends Activity {
         Consts.IS_WENTONG = true;
 
         if (TextUtils.isEmpty(AuthHelper.seriaNumber)) {
-            WintonRecogManager.getInstance().auth(this, Consts.IS_WENTONG);
+   //         WintonRecogManager.getInstance().auth(this, Consts.IS_WENTONG);
         }
         iv_clip = (ImageView) findViewById(R.id.iv_clip);
         tv_plate = (TextView) findViewById(R.id.tv_plate);
@@ -106,7 +106,7 @@ public class TestActivity extends Activity {
         btn_cast.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                WintonRecogManager.getInstance().bind(TestActivity.this);
+                //WintonRecogManager.getInstance().bind(TestActivity.this);
                 btn_cast.setClickable(false);
                 new Thread(new Runnable() {
                     @Override
@@ -149,7 +149,7 @@ public class TestActivity extends Activity {
 
                             }
                         });
-                        WintonRecogManager.getInstance().unBind(TestActivity.this, true);
+        //                WintonRecogManager.getInstance().unBind(TestActivity.this, true);
                     }
                 }).start();
 
