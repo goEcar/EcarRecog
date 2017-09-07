@@ -21,9 +21,6 @@ android {
         targetSdkVersion 21
         versionCode 1
         versionName "1.2"
-        ndk {
-            abiFilters "armeabi", "armeabi-v7a", "x86", "LPR"
-        }
         buildConfigField "boolean", "isShowCast", "true" //是否显示转换按钮
 
     }
@@ -50,6 +47,7 @@ android {
         debug {
             def isMinifyEnabled = false;//混淆（打正式包）
             debuggable true
+            jniDebuggable true
             minifyEnabled isMinifyEnabled
             zipAlignEnabled isMinifyEnabled
             shrinkResources isMinifyEnabled
@@ -78,7 +76,7 @@ android {
     }
     sourceSets {
         main {
-            jniLibs.srcDirs = ['libs']
+  //          jniLibs.srcDirs = ['libs']
             assets.srcDirs = ['assets']
         }
     }
@@ -117,7 +115,8 @@ dependencies {
     compile 'com.github.goEcar:EcarEncryption:latest.release'
     compile 'com.github.goEcar:EcarBugly:latest.release'
     compile 'com.github.goEcar:EcarNetFream:latest.release'
-    compile project(':mylibrary')
+//    compile project(':mylibrary')
+    compile project(path: ':mylibrary' , configuration: 'debug')
 }
 
 

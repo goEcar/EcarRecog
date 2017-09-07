@@ -56,5 +56,8 @@ freeline_project_description.json
 
 # jni,.so
 jni/
-*.so
+*/*.so
 */.DS_Store
+
+#CMakeLists.txt
+CMakeLists.txt

@@ -1,6 +1,8 @@
 apply plugin: 'com.android.library'
 
 android {
+    publishNonDefault  true //this line
+
     compileSdkVersion 24
     buildToolsVersion '25.0.2'
 
@@ -15,14 +17,14 @@ android {
         }
         externalNativeBuild {
             cmake {
-                cppFlags ""
+                cppFlags "-D_DEBUG"
             }
         }
 
     }
     sourceSets {
         main {
-            jniLibs.srcDirs = ['libs']
+  //          jniLibs.srcDirs = ['libs']
             assets.srcDirs = ['assets']
         }
 
@@ -50,6 +52,8 @@ android {
         release {
             def isMinifyEnabled = false;//混淆（打正式包）
             debuggable true
+            jniDebuggable true
+            jniDebuggable = true
             minifyEnabled isMinifyEnabled
             zipAlignEnabled isMinifyEnabled
             shrinkResources isMinifyEnabled
@@ -59,6 +63,23 @@ android {
             }
             signingConfig signingConfigs.release
 
+
+        }
+
+        debug {
+            def isMinifyEnabled = false;//混淆（打正式包）
+            debuggable true
+            jniDebuggable true
+            jniDebuggable = true
+            minifyEnabled isMinifyEnabled
+            zipAlignEnabled isMinifyEnabled
+            shrinkResources isMinifyEnabled
+
+            //加载默认混淆配置文件
+            if (isMinifyEnabled) {
+                proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-android.txt'
+            }
+            signingConfig signingConfigs.release
 
         }
     }

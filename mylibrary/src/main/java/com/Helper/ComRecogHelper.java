@@ -36,6 +36,7 @@ public class ComRecogHelper {
 
 
     public ComRecogHelper() {
+
     }
 
     //isInitConfig 是否初始化参数   相机页面一定要设为true否则无法识别
