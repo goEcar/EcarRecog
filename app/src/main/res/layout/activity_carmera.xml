@@ -10,9 +10,10 @@
 
     <Button
         android:id="@+id/btn_save"
-        android:layout_width="match_parent"
-        android:layout_height="20dp"
-        android:background="@color/transparent" />
-
+        android:layout_width="fill_parent"
+        android:layout_height="80dp"
+        android:text="保存图片"
+        android:layout_alignParentBottom="true"
+        android:background="@color/red" />
 
 </RelativeLayout>

@@ -2,6 +2,7 @@ package recognition.ecarrecog;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.graphics.ImageFormat;
 import android.graphics.PixelFormat;
 import android.hardware.Camera;
 import android.hardware.Camera.AutoFocusCallback;
@@ -69,27 +70,79 @@ public class MemoryCameraActivity extends Activity implements SurfaceHolder.Call
     private boolean isFatty = false;
     private int rotation = 90;
 
+    private Boolean isClickedPic = false;
+    private Boolean isClickedSavePic = false; // 视频时点击保存图片
+
     private boolean isSuccess; //是否获取成功
     private Camera.Parameters parameters;
     private ComRecogHelper recogHelper;
-    WintonRecogManager wintonHelper;
+    private static boolean isFocusVal = false;  //是否正在对焦
+
+
+    AutoFocusCallback autoFocusCallback=new AutoFocusCallback() {
+        @Override
+        public void onAutoFocus(boolean b, Camera camera) {
+            Log.e("qob", "onAutoFocus  isFocusVal " + b);
+            isFocusVal = false;
+        }
+    };
+
+    RecogResult recogResultCallBack = new RecogResult() {
+        @Override
+        public void recogSuccess(String carPlate, byte[] picData) {
+
+            mCamera.setPreviewCallbackWithBuffer(null);
+            Log.e("qob", "recogSuccess " + carPlate);
+            isSuccess = true;
+            //识别一次
+            setResult(RESULT_OK);
+            MemoryCameraActivity.this.finish();
+        }
+
+        @Override
+        public void recogFail() {
+            Log.e("qob", "Camera 识别失败 isFocusVal: " + isFocusVal);
+            try {
+
+                if (mCamera != null && !isFocusVal) {
+                    isFocusVal = true;
+                    Log.e("qob", "mCamera != null 识别失败");
+                    mCamera.cancelAutoFocus();
+                    mCamera.autoFocus(autoFocusCallback);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        @Override
+        public void permitionSuccess() {
+
+        }
+
+        @Override
+        public void permitionFail() {
+            Toast.makeText(MemoryCameraActivity.this, "获取权限失败！", Toast.LENGTH_SHORT).show();
+            setResult(RESULT_OK);
+            finish();
+        }
+    };
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        recogHelper = ComRecogHelper.getDefault(getApplication(), true, "粤",false);
-        Consts.IS_WENTONG=false;
-//        if (Consts.IS_WENTONG) {
-//            wintonHelper = WintonRecogManager.getInstance();
-//            wintonHelper.setStop(false);
-//            wintonHelper.bind(MemoryCameraActivity.this);
-//        }
+
+        recogHelper = ComRecogHelper.getDefault(getApplication(), true, "粤", false);
+        isFocusVal = false;
+
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);//
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.activity_carmera);
+
         DisplayMetrics metric = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metric);
         width = metric.widthPixels; //
@@ -107,76 +160,30 @@ public class MemoryCameraActivity extends Activity implements SurfaceHolder.Call
             @Override
             public void onClick(View view) {
                 if(mCamera!=null)
-                    mCamera.autoFocus(new AutoFocusCallback() {
-                        @Override
-                        public void onAutoFocus(boolean b, Camera camera) {
-
-                        }
-                    });
+                    mCamera.autoFocus(autoFocusCallback);
             }
         });
 
-
     }
-
-
-    /**
-     * 文通获取车牌号后的回调类
-     */
-    class Geted implements RecogniteHelper4WT.OnResult {
-
-
-        @Override
-        public void onGeted(String fileName, String carPlate) {
-            wintonHelper.setStop(true);
-            Consts.platenum = carPlate;
-
-//            Intent intent = new Intent(MemoryCameraActivity.this, TestActivity.class);
-//            startActivity(intent);
-            setResult(RESULT_OK);
-            MemoryCameraActivity.this.finish();
-
-        }
-
-        @Override
-        public void recogFail() {
-
-        }
-
-        @Override
-        public String saveImage(byte[] data) {
-            Consts.orgdata = data;
-            return "";
-        }
-    }
-
 
     private void findView() {
-        findViewById(R.id.btn_save).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (Consts.orgdata == null || mCamera == null) {
-                    Toast.makeText(MemoryCameraActivity.this, "保存失败", Toast.LENGTH_SHORT).show();
-                    return;
+        if (!ComRecogHelper.isPic) {
+            isClickedPic = false;
+
+            findViewById(R.id.btn_save).setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.e("qob", "btn_save setOnClickListener");
+                    isClickedSavePic = true;
                 }
-                Consts.orgw = mCamera.getParameters().getPreviewSize().width;
-                Consts.orgh = mCamera.getParameters().getPreviewSize().height;
-                Toast.makeText(MemoryCameraActivity.this, "正在保存~", Toast.LENGTH_SHORT).show();
-                RecogFileUtil.saveBitmap();
-                Toast.makeText(MemoryCameraActivity.this, "保存成功！", Toast.LENGTH_SHORT).show();
-            }
-        });
+            });
+        }
 
         surfaceView = (SurfaceView) findViewById(R.id.surfaceViwe_video);
         surfaceView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                mCamera.autoFocus(new AutoFocusCallback() {
-                    @Override
-                    public void onAutoFocus(boolean b, Camera camera) {
-
-                    }
-                });
+                mCamera.autoFocus(autoFocusCallback);
             }
         });
         re = (RelativeLayout) findViewById(R.id.memory);
@@ -184,38 +191,16 @@ public class MemoryCameraActivity extends Activity implements SurfaceHolder.Call
         holder = surfaceView.getHolder();
         holder.addCallback(MemoryCameraActivity.this);
         holder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+
+
         if (ComRecogHelper.isPic) {
-            findViewById(R.id.memory).setOnClickListener(new OnClickListener() {
+            findViewById(R.id.btn_save).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (Consts.orgdata == null || mCamera == null) {
-                        Toast.makeText(MemoryCameraActivity.this, "识别失败，请再按一次", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
+                    Log.e("qob", "click memory");
+
+                    isClickedPic = true;
                     surfaceView.setClickable(false);
-                    recogHelper.getCarnum(Consts.orgdata, mCamera, new RecogResult() {
-                        @Override
-                        public void recogSuccess(String carPlate, byte[] picData) {
-//                            Intent intent = new Intent(MemoryCameraActivity.this, TestActivity.class);
-//                            startActivity(intent);
-                            MemoryCameraActivity.this.finish();
-                        }
-
-                        @Override
-                        public void recogFail() {
-                        }
-
-                        @Override
-                        public void permitionSuccess() {
-
-                        }
-
-                        @Override
-                        public void permitionFail() {
-                            Toast.makeText(MemoryCameraActivity.this, "获取权限失败！", Toast.LENGTH_SHORT).show();
-                            finish();
-                        }
-                    });
                 }
             });
         }
@@ -226,9 +211,9 @@ public class MemoryCameraActivity extends Activity implements SurfaceHolder.Call
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        recogHelper.offFlash(parameters);
-        Consts.IS_WENTONG=true;
 
+        Log.e("qob", "onDestroy");
+        recogHelper.offFlash(parameters);
     }
 
     /**
@@ -239,14 +224,14 @@ public class MemoryCameraActivity extends Activity implements SurfaceHolder.Call
      * @return
      */
     private void releaseCamera() {
+
         if (mCamera != null) {
             mCamera.setPreviewCallback(null);
+            mCamera.setPreviewCallbackWithBuffer(null);
             mCamera.cancelAutoFocus();
             mCamera.stopPreview();
             mCamera.release();
             mCamera = null;
-            if (Consts.IS_WENTONG&&wintonHelper!=null)
-                wintonHelper.unBind(this, Consts.IS_WENTONG);
         }
     }
 
@@ -259,20 +244,20 @@ public class MemoryCameraActivity extends Activity implements SurfaceHolder.Call
 
     @Override
     public void surfaceChanged(final SurfaceHolder holder, int format, int width, int height) {
-
+        Log.e("qob", "surfaceChanged");
     }
 
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                releaseCamera();
-            }
-        }).start();
-
-
+        Log.e("qob", "surfaceDestroyed");
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                releaseCamera();
+//            }
+//        }).start();
+        releaseCamera();
     }
 
     @Override
@@ -287,47 +272,74 @@ public class MemoryCameraActivity extends Activity implements SurfaceHolder.Call
     @Override
     public void onPreviewFrame(byte[] data, final Camera camera) {
 
-        if (ComRecogHelper.isPic || isSuccess) {
-            return;
-        }
-        if (Consts.IS_WENTONG) {
-            if (wintonHelper != null && System.currentTimeMillis() - time > 500) {
-                time = System.currentTimeMillis();
-                wintonHelper.useWTRecognitionByData(this, data, new Geted(), preWidth, preHeight);
-            }
-        } else {
-            recogHelper.getCarnum(data, camera, new RecogResult() {
-                @Override
-                public void recogSuccess(String carPlate, byte[] picData) {
-                    isSuccess = true;
-                    //识别一次
-                    setResult(RESULT_OK);
-                    MemoryCameraActivity.this.finish();
+        camera.addCallbackBuffer(data);
 
-                    //无限次识别
+        if (ComRecogHelper.isPic) {
+
+            if (isClickedPic) {
+                isClickedPic = false;
+                Consts.orgdata = data;
+                Consts.orgw = mCamera.getParameters().getPreviewSize().width;
+                Consts.orgh = mCamera.getParameters().getPreviewSize().height;
+
+                Log.e("qob", "isClickedPic " + Consts.orgw + " orgh " + Consts.orgh);
+
+                RecogFileUtil.saveBitmap(true);
+
+                recogHelper.getCarnum(data, camera, new RecogResult() {
+                    @Override
+                    public void recogSuccess(String carPlate, byte[] picData) {
+
+                        Log.e("qob", "recogSuccess " + carPlate);
+                        isSuccess = true;
+                        //识别一次
+                        setResult(RESULT_OK);
+                        MemoryCameraActivity.this.finish();
+
+                        //无限次识别
 //                recogHelper=RecogHelperSafe.getDefault(MemoryCameraActivity.this,true);
 //                Toast.makeText(MemoryCameraActivi`ty.this, "车牌号 ="+carPlate, Toast.LENGTH_SHORT).show();
+                    }
 
-                }
+                    @Override
+                    public void recogFail() {
+                        Log.e("qob", "Camera 识别失败");
+                        Toast.makeText(MemoryCameraActivity.this, "pic 识别失败", Toast.LENGTH_SHORT).show();
+                    }
 
-                @Override
-                public void recogFail() {
-                }
+                    @Override
+                    public void permitionSuccess() {
 
-                @Override
-                public void permitionSuccess() {
+                    }
 
-                }
-
-                @Override
-                public void permitionFail() {
-                    Toast.makeText(MemoryCameraActivity.this, "获取权限失败！", Toast.LENGTH_SHORT).show();
-                    setResult(RESULT_OK);
-                    finish();
-                }
-            });
-            Log.i("recog=", "可用内存=" + MemoryUtil.getmem_UNUSED(this) + "\n总内存=" + MemoryUtil.getmem_TOLAL());
+                    @Override
+                    public void permitionFail() {
+                        Toast.makeText(MemoryCameraActivity.this, "获取权限失败！", Toast.LENGTH_SHORT).show();
+                        setResult(RESULT_OK);
+                        finish();
+                    }
+                });
+            }
+            return;
         }
+
+        if (isClickedSavePic){
+            isClickedSavePic = false;
+
+            Consts.orgdata = data;
+            if (Consts.orgdata == null || mCamera == null) {
+                Toast.makeText(MemoryCameraActivity.this, "保存失败", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            Consts.orgw = mCamera.getParameters().getPreviewSize().width;
+            Consts.orgh = mCamera.getParameters().getPreviewSize().height;
+            Toast.makeText(MemoryCameraActivity.this, "正在保存~", Toast.LENGTH_SHORT).show();
+            RecogFileUtil.saveBitmap(true);
+            Toast.makeText(MemoryCameraActivity.this, "保存成功！", Toast.LENGTH_SHORT).show();
+        }
+
+        recogHelper.getCarnum(data, camera, recogResultCallBack);
+        Log.i("recog=", "可用内存=" + MemoryUtil.getmem_UNUSED(this) + "\n总内存=" + MemoryUtil.getmem_TOLAL());
     }
 
 
@@ -337,6 +349,7 @@ public class MemoryCameraActivity extends Activity implements SurfaceHolder.Call
      */
     @TargetApi(14)
     private void initCamera(SurfaceHolder holder, int r) {
+
         if (mCamera == null) {
             try {
                 mCamera = Camera.open();
@@ -399,14 +412,12 @@ public class MemoryCameraActivity extends Activity implements SurfaceHolder.Call
                 mCamera.stopPreview();
             }
         }
-
         mCamera.setDisplayOrientation(r);
-        mCamera.setPreviewCallback(this);
+ //       mCamera.setPreviewCallback(this);
+        mCamera.setPreviewCallbackWithBuffer(this);
+        mCamera.addCallbackBuffer(new byte[((preHeight * preWidth) * ImageFormat.getBitsPerPixel(ImageFormat.NV21)) / 8]);
         mCamera.startPreview();
-
         re.removeView(myview);
         re.addView(myview);
     }
-
-
 }

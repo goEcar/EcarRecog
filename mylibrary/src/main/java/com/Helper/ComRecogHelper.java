@@ -50,7 +50,7 @@ public class ComRecogHelper {
     //isInitConfig 是否初始化参数   相机页面一定要设为true否则无法识别
     //cityName  默认的第一个汉字 如：粤
     //isCheckRecog  true 检查权限
-    public static synchronized ComRecogHelper getDefault(Application context, boolean isInitConfig, String cityName,boolean isCheckRecog) {
+    public static synchronized ComRecogHelper getDefault(Application context, boolean isInitConfig, String cityName, boolean isCheckRecog) {
         Consts.IS_CHECK_PERMITION = isCheckRecog;
         synchronized (ComRecogHelper.class) {
             recogHelperSafe = RecogHelperSafe.getDefault(context, isInitConfig, cityName);
@@ -84,7 +84,7 @@ public class ComRecogHelper {
      ****************************************/
 
     public synchronized void getCarnumByTime(final byte[] data, final Camera camera, final RecogResult recogToken, int maxTime) {
-        recogHelperSafe.getCarnumByTime(data, camera, recogToken, maxTime);
+      //  recogHelperSafe.getCarnumByTime(data, camera, recogToken, maxTime);
     }
 
     //判断是否是车牌

@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 
 android {
-    publishNonDefault  true //this line
+    publishNonDefault  false //this line
 
     compileSdkVersion 24
     buildToolsVersion '25.0.2'
@@ -17,14 +17,14 @@ android {
         }
         externalNativeBuild {
             cmake {
-                cppFlags "-D_DEBUG"
+                cppFlags ""
             }
         }
 
     }
     sourceSets {
         main {
-  //          jniLibs.srcDirs = ['libs']
+            jniLibs.srcDirs = ['libs']
             assets.srcDirs = ['assets']
         }
 

@@ -677,10 +677,14 @@ public class RecogFileUtil {
      * @param
      * @return
      */
-    public static Bitmap saveBitmap() {
+    public static Bitmap saveBitmap(Boolean isSaveFile) {
+
+        Log.e("qob", "saveBitmap ##111");
         if (Consts.orgdata == null) {
+            Log.e("qob", "saveBitmap  orgdata == null");
             return null;
         }
+        Log.e("qob", "saveBitmap ##2222");
         Bitmap bitmap = null;
         try {
             bitmap = ImageUtils.GetBitmapFromYUV420SP(Consts.orgdata, Consts.orgw, Consts.orgh);
@@ -694,8 +698,10 @@ public class RecogFileUtil {
                     Consts.speed + "秒" +
                     ".jpg";
 
-            File imgFile = new File(Consts.IMAGGE_DIR, fileName);
-            saveBitmap(imgFile.getPath(), bitmap);
+            if (isSaveFile) {
+                File imgFile = new File(Consts.IMAGGE_DIR, fileName);
+                saveBitmap(imgFile.getPath(), bitmap);
+            }
 
 //            if (bitmap != null && !bitmap.isRecycled()) {
 //                bitmap.compress(Bitmap.CompressFormat.JPEG, 40, new FileOutputStream(imgFile));

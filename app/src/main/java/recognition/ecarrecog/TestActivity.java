@@ -38,6 +38,7 @@ public class TestActivity extends Activity {
 
     public ImageView iv_clip;
     public TextView tv_plate;
+    public TextView tv_versionNum;
 
 
     Bitmap bitmap;
@@ -47,6 +48,7 @@ public class TestActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initPermition();
+
     }
 
     //权限管理
@@ -72,13 +74,10 @@ public class TestActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (TextUtils.isEmpty(AuthHelper.seriaNumber)) {
-            //WintonRecogManager.getInstance().auth(this, Consts.IS_WENTONG);
-        }
 
 
         Log.d("tag", "init");
-        if ((bitmap = RecogFileUtil.saveBitmap()) != null) {
+        if ((bitmap = RecogFileUtil.saveBitmap(true)) != null) {
             iv_clip.setImageBitmap(bitmap);
         } else {
             Consts.platenum = "";
@@ -87,26 +86,24 @@ public class TestActivity extends Activity {
         }
 
         tv_plate.setText(Consts.platenum + "     速度：" + Consts.speed + "s");
-
+        Consts.orgdata = null;
     }
 
     private void init() {
-        Consts.IS_WENTONG = true;
 
-        if (TextUtils.isEmpty(AuthHelper.seriaNumber)) {
-   //         WintonRecogManager.getInstance().auth(this, Consts.IS_WENTONG);
-        }
         iv_clip = (ImageView) findViewById(R.id.iv_clip);
         tv_plate = (TextView) findViewById(R.id.tv_plate);
+        tv_versionNum = (TextView) findViewById(R.id.appVersionNum);
         Button btn_pic = (Button) findViewById(R.id.btn_pic);
         Button btn_video = (Button) findViewById(R.id.btn_video);
+
+        tv_versionNum.setText("版本号: " + BuildConfig.VERSION_NAME);
 
         final Button btn_cast = (Button) findViewById(R.id.btn_cast);  //转换按钮
         btn_cast.setVisibility(BuildConfig.isShowCast ? View.VISIBLE : View.GONE);
         btn_cast.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                //WintonRecogManager.getInstance().bind(TestActivity.this);
                 btn_cast.setClickable(false);
                 new Thread(new Runnable() {
                     @Override
@@ -118,7 +115,6 @@ public class TestActivity extends Activity {
                                     @Override
                                     public void run() {
                                         btn_cast.setText("正在处理...(" + count + ")");
-
                                     }
                                 });
                             }
@@ -149,7 +145,7 @@ public class TestActivity extends Activity {
 
                             }
                         });
-        //                WintonRecogManager.getInstance().unBind(TestActivity.this, true);
+                        WintonRecogManager.getInstance().unBind(TestActivity.this, true);
                     }
                 }).start();
 
