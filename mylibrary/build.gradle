@@ -11,15 +11,15 @@ android {
         targetSdkVersion 24
         versionCode 1
         versionName "1.0"
-        ndk {
-            moduleName "LPR"
-            abiFilters "armeabi", "armeabi-v7a", "x86"
-        }
-        externalNativeBuild {
-            cmake {
-                cppFlags ""
-            }
-        }
+//        ndk {
+//            moduleName "LPR"
+//            abiFilters "armeabi", "armeabi-v7a", "x86"
+//        }
+//        externalNativeBuild {
+//            cmake {
+//                cppFlags ""
+//            }
+//        }
 
     }
     sourceSets {
@@ -83,11 +83,11 @@ android {
 
         }
     }
-    externalNativeBuild {
-        cmake {
-            path 'CMakeLists.txt'
-        }
-    }
+//    externalNativeBuild {
+//        cmake {
+//            path 'CMakeLists.txt'
+//        }
+//    }
 }
 
 
