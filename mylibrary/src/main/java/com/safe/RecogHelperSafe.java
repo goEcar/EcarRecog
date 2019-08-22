@@ -138,12 +138,12 @@ public class RecogHelperSafe {
 
     public static int bestScope;//上一次的识别率
 
-    public synchronized void getCarnum(final byte[] data, final Camera camera, final RecogResult recogToken) {
+    public synchronized void getCarnum(final byte[] data, final Camera camera, final RecogResult recogToken) throws Exception{
 
         getCarnum(data, camera.getParameters().getPreviewSize().width, camera.getParameters().getPreviewSize().height, recogToken);
     }
 
-    public synchronized void getCarnum(final byte[] data, int width, int height, final RecogResult recogToken) {
+    public synchronized void getCarnum(final byte[] data, int width, int height, final RecogResult recogToken) throws Exception{
         if (!permitionCheck(recogToken)) {
             return;
         }
@@ -161,15 +161,15 @@ public class RecogHelperSafe {
 
                 String platenum = "";
                 int scope = 0;
-                try {
+//                try {
                     LPR.locate(width, height, data); //0-255
                     platenum = new String(LPR.getplate(0), "GBK").trim();
                     scope = LPR.getplatescore(0);
 
-                    Log.d("qob", "getCarnum " + platenum + " scope " + scope+"  "+width+"  "+height+"  "+data.length);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                    Log.d("qob", "getCarnum " + platenum + " scope " + scope+"  "+width+"  "+height);
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
 
                 Log.d("number1", TextUtils.isEmpty(platenum) ? "返回空  " : platenum + "正确率="+scope);
 
