@@ -166,7 +166,7 @@ public class RecogHelperSafe {
                     platenum = new String(LPR.getplate(0), "GBK").trim();
                     scope = LPR.getplatescore(0);
 
-                    Log.d("qob", "getCarnum " + platenum + " scope " + scope);
+                    Log.d("qob", "getCarnum " + platenum + " scope " + scope+"  "+width+"  "+height+"  "+data.length);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
