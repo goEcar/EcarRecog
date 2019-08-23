@@ -73,7 +73,7 @@ public class ComRecogHelper {
     }
 
 
-    public synchronized void getCarnum(final byte[] data, final Camera camera, final RecogResult recogToken)  {
+    public synchronized void getCarnum(final byte[] data, final Camera camera, final RecogResult recogToken) throws  Exception {
         recogHelperSafe.getCarnum(data, camera, recogToken);
     }
 
