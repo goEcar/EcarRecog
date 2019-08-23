@@ -20,28 +20,28 @@ android {
         minSdkVersion 15
         targetSdkVersion 21
         versionCode 1
-        versionName "2.0.8"
+        versionName "2.0.9"
         buildConfigField "boolean", "isShowCast", "true" //是否显示转换按钮
 
     }
 
-    signingConfigs {
-        debug {
-            v2SigningEnabled false
-            keyAlias "test"
-            keyPassword "123456"
-            storeFile new File(getProjectDir().absolutePath + "/buildsystem/YCDEVELOP.jks")
-            storePassword "123456"//密钥库的密码
-        }
-        release {
-            v2SigningEnabled false
-            storeFile new File(getProjectDir().absolutePath + "/buildsystem/YCDEVELOP.jks")
-            keyAlias "test"
-            keyPassword "123456"
-            storePassword "123456"//密钥库的密码
-        }
-
-    }
+//    signingConfigs {
+//        debug {
+//            v2SigningEnabled false
+//            keyAlias "test"
+//            keyPassword "123456"
+//            storeFile new File(getProjectDir().absolutePath + "/buildsystem/YCDEVELOP.jks")
+//            storePassword "123456"//密钥库的密码
+//        }
+//        release {
+//            v2SigningEnabled false
+//            storeFile new File(getProjectDir().absolutePath + "/buildsystem/YCDEVELOP.jks")
+//            keyAlias "test"
+//            keyPassword "123456"
+//            storePassword "123456"//密钥库的密码
+//        }
+//
+//    }
 
     buildTypes {
         debug {
@@ -56,7 +56,7 @@ android {
             if (isMinifyEnabled) {
                 proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-android.txt'
             }
-            signingConfig signingConfigs.release
+//            signingConfig signingConfigs.release
 
         }
 
@@ -70,7 +70,7 @@ android {
             if (isMinifyEnabled) {
                 proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-android.txt'
             }
-            signingConfig signingConfigs.release
+//            signingConfig signingConfigs.release
 
         }
     }

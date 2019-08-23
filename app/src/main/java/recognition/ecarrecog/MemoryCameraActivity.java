@@ -285,40 +285,43 @@ public class MemoryCameraActivity extends Activity implements SurfaceHolder.Call
                 Log.e("qob", "isClickedPic " + Consts.orgw + " orgh " + Consts.orgh);
 
                 RecogFileUtil.saveBitmap(true);
+                try {
+                    recogHelper.getCarnum(data, camera, new RecogResult() {
+                        @Override
+                        public void recogSuccess(String carPlate, byte[] picData) {
 
-                recogHelper.getCarnum(data, camera, new RecogResult() {
-                    @Override
-                    public void recogSuccess(String carPlate, byte[] picData) {
+                            Log.e("qob", "recogSuccess " + carPlate);
+                            isSuccess = true;
+                            //识别一次
+                            setResult(RESULT_OK);
+                            MemoryCameraActivity.this.finish();
 
-                        Log.e("qob", "recogSuccess " + carPlate);
-                        isSuccess = true;
-                        //识别一次
-                        setResult(RESULT_OK);
-                        MemoryCameraActivity.this.finish();
-
-                        //无限次识别
+                            //无限次识别
 //                recogHelper=RecogHelperSafe.getDefault(MemoryCameraActivity.this,true);
 //                Toast.makeText(MemoryCameraActivi`ty.this, "车牌号 ="+carPlate, Toast.LENGTH_SHORT).show();
-                    }
+                        }
 
-                    @Override
-                    public void recogFail() {
-                        Log.e("qob", "Camera 识别失败");
-                        Toast.makeText(MemoryCameraActivity.this, "pic 识别失败", Toast.LENGTH_SHORT).show();
-                    }
+                        @Override
+                        public void recogFail() {
+                            Log.e("qob", "Camera 识别失败");
+                            Toast.makeText(MemoryCameraActivity.this, "pic 识别失败", Toast.LENGTH_SHORT).show();
+                        }
 
-                    @Override
-                    public void permitionSuccess() {
+                        @Override
+                        public void permitionSuccess() {
 
-                    }
+                        }
 
-                    @Override
-                    public void permitionFail() {
-                        Toast.makeText(MemoryCameraActivity.this, "获取权限失败！", Toast.LENGTH_SHORT).show();
-                        setResult(RESULT_OK);
-                        finish();
-                    }
-                });
+                        @Override
+                        public void permitionFail() {
+                            Toast.makeText(MemoryCameraActivity.this, "获取权限失败！", Toast.LENGTH_SHORT).show();
+                            setResult(RESULT_OK);
+                            finish();
+                        }
+                    });
+                }catch (Exception e){
+
+                }
             }
             return;
         }
@@ -337,9 +340,12 @@ public class MemoryCameraActivity extends Activity implements SurfaceHolder.Call
             RecogFileUtil.saveBitmap(true);
             Toast.makeText(MemoryCameraActivity.this, "保存成功！", Toast.LENGTH_SHORT).show();
         }
+       try {
+           recogHelper.getCarnum(data, camera, recogResultCallBack);
+           Log.i("recog=", "可用内存=" + MemoryUtil.getmem_UNUSED(this) + "\n总内存=" + MemoryUtil.getmem_TOLAL());
+       }catch (Exception e){
 
-        recogHelper.getCarnum(data, camera, recogResultCallBack);
-        Log.i("recog=", "可用内存=" + MemoryUtil.getmem_UNUSED(this) + "\n总内存=" + MemoryUtil.getmem_TOLAL());
+       }
     }
 
 
