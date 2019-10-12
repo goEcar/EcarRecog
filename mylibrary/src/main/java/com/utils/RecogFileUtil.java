@@ -2,6 +2,7 @@ package com.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.ImageFormat;
@@ -15,6 +16,7 @@ import android.util.Log;
 
 import com.util.ImageUtils;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -52,7 +54,29 @@ public class RecogFileUtil {
         }
         return false;
     }
+    public static String getPath(String file, Context context) {
+        AssetManager assetManager = context.getAssets();
+        BufferedInputStream inputStream = null;
+        try {
+            // Read data from assets.
+            inputStream = new BufferedInputStream(assetManager.open(file));
+            byte[] data = new byte[inputStream.available()];
+            inputStream.read(data);
+            inputStream.close();
 
+            // Create copy file in storage.
+            File outFile = new File(context.getFilesDir(), file);
+            FileOutputStream os = new FileOutputStream(outFile);
+            os.write(data);
+            os.close();
+            // Return a path to file which may be read in common way.
+            return outFile.getAbsolutePath();
+
+        } catch (IOException ex) {
+            Log.i(TAG, "Failed to upload a file");
+        }
+        return "";
+    }
     /**
      * 保存二进制流到指定路径
      *
