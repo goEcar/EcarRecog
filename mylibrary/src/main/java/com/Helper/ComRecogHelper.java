@@ -95,7 +95,7 @@ public class ComRecogHelper {
         detectrect[1] = 0;
         detectrect[2] = Previewwidth  ;
         detectrect[3] = Previewheight;
-        int nplatenum =  liblpr.LprVideo(data ,Previewwidth ,Previewheight ,0,detectrect,1, 0 ,0,"");
+        int nplatenum =  liblpr.LprVideo(data ,Previewwidth ,Previewheight ,2,detectrect,1, 0 ,0,"");
         if(nplatenum > 0)
         {
             String  platenum =  liblpr.GetPlatenum(0) ;
