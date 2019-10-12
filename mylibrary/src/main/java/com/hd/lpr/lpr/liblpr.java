@@ -49,7 +49,7 @@ public class liblpr {
 
 	//视频识别车牌 ，输入 BGR图像，宽度 高度，类型 ，  识别区域，  参数中经纬度 和地址是透传数据，不需要传入0 或者任意值，
     //识别到较为稳定结果后会触发回调函数
-    //			Rectposnum: 识别个数
+    //			Rectposnum: 识别个数  Type:像素类型
     public native static int LprVideo(byte[] pImg, int width, int height, int type, int []detectrect, int rectposnum, double longitude, double latitude, String place);
 }
 
