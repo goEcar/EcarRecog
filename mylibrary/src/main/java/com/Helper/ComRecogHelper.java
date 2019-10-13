@@ -92,14 +92,14 @@ public class ComRecogHelper {
      *     //			Rectposnum: 识别个数  1   Type:像素类型 2
 
      */
-    public synchronized void getNANjingCarnum(byte[] data,int Previewwidth, int Previewheight, final RecogResult recogToken, int type,  int rectposnum) throws  Exception {
+    public synchronized void getNANjingCarnum(byte[] data,int Previewwidth, int Previewheight, int type,  int rectposnum,String place, final RecogResult recogToken) throws  Exception {
         String str="" ;
         int []detectrect = new int[4] ;
         detectrect[0] =0  ;
         detectrect[1] = 0;
         detectrect[2] = Previewwidth  ;
         detectrect[3] = Previewheight;
-        int nplatenum =  liblpr.LprVideo(data ,Previewwidth ,Previewheight ,type,detectrect,rectposnum, 0 ,0,"");
+        int nplatenum =  liblpr.LprVideo(data ,Previewwidth ,Previewheight ,type,detectrect,rectposnum, 0 ,0,place);
         if(nplatenum > 0)
         {
             String  platenum =  liblpr.GetPlatenum(0) ;
