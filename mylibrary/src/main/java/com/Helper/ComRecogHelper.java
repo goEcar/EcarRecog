@@ -63,10 +63,10 @@ public class ComRecogHelper {
     }
     //isInitConfig 是否初始化参数   相机页面一定要设为true否则无法识别
     //cityName  默认的第一个汉字 如：粤
-    //isCheckRecog  true 检查权限
-    public static synchronized ComRecogHelper getDefaultNANjing(Context context, boolean isInitConfig, String cityName, boolean isCheckRecog) {
+    //isCheckRecog  true 检查权限    int maxwidth, int maxheight 初始化车牌识别，输入 最大宽度 高度，密码 (密码暂时随意输入一个)
+    public static synchronized ComRecogHelper getDefaultNANjing(Context context, boolean isInitConfig, String cityName, boolean isCheckRecog,int maxwidth, int maxheight) {
         Consts.IS_CHECK_PERMITION = isCheckRecog;
-        NANJing_Init(context);
+        NANJing_Init(context, maxwidth,  maxheight);
         return recogHelper == null ? recogHelper = new ComRecogHelper() : recogHelper;
     }
     //是否获取过权限
@@ -83,10 +83,10 @@ public class ComRecogHelper {
     public synchronized void getCarnum(final byte[] data, final Camera camera, final RecogResult recogToken) throws  Exception {
         recogHelperSafe.getCarnum(data, camera, recogToken);
     }
-    public static void   NANJing_Init(Context context){
+    public static void   NANJing_Init(Context context,int maxwidth, int maxheight ){
         String  modelpath  = RecogFileUtil.getPath("carbands.bin", context);
         liblpr.InitEnv(context ,modelpath ) ;
-        int nRet = liblpr.InitLpr(2048,2048,null);
+        int nRet = liblpr.InitLpr(maxwidth,maxheight,null);
     }
 
     /**
