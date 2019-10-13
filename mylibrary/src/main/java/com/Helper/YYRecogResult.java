@@ -1,7 +1,7 @@
 package com.Helper;
 //权限回调接口
 public interface YYRecogResult {
-    void recogSuccess( byte[] picData);  //识别成功
+    void recogSuccess( );  //识别成功
 
     void recogFail();   //识别失败
 

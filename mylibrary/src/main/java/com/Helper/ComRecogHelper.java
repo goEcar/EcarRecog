@@ -98,9 +98,9 @@ public class ComRecogHelper {
         int nplatenum =  liblpr.LprVideo(data ,Preview_width ,Preview_height ,type,detectrect,rectposnum, 0 ,0,place);
         if(nplatenum > 0)
         {
-            recogToken.recogSuccess(data);
+//            recogToken.recogSuccess();
         }else{
-            recogToken.recogFail();
+//            recogToken.recogFail();
         }
 
     }
