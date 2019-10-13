@@ -24,6 +24,7 @@ package com.Helper;
  */
 
 import android.app.Application;
+import android.content.Context;
 import android.hardware.Camera;
 import android.util.Log;
 
@@ -63,7 +64,7 @@ public class ComRecogHelper {
     //isInitConfig 是否初始化参数   相机页面一定要设为true否则无法识别
     //cityName  默认的第一个汉字 如：粤
     //isCheckRecog  true 检查权限
-    public static synchronized ComRecogHelper getDefaultNANjing(Application context, boolean isInitConfig, String cityName, boolean isCheckRecog) {
+    public static synchronized ComRecogHelper getDefaultNANjing(Context context, boolean isInitConfig, String cityName, boolean isCheckRecog) {
         Consts.IS_CHECK_PERMITION = isCheckRecog;
         NANJing_Init(context);
         return recogHelper == null ? recogHelper = new ComRecogHelper() : recogHelper;
@@ -82,23 +83,22 @@ public class ComRecogHelper {
     public synchronized void getCarnum(final byte[] data, final Camera camera, final RecogResult recogToken) throws  Exception {
         recogHelperSafe.getCarnum(data, camera, recogToken);
     }
-    public static void   NANJing_Init(Application context){
+    public static void   NANJing_Init(Context context){
         String  modelpath  = RecogFileUtil.getPath("carbands.bin", context);
         liblpr.InitEnv(context ,modelpath ) ;
-        int nRet = liblpr.InitLpr(1920,1080,null);
+        int nRet = liblpr.InitLpr(2048,2048,null);
     }
 
     /**
      *     //			Rectposnum: 识别个数  1   Type:像素类型 2
 
      */
-    public synchronized void getNANjingCarnum(byte[] data,int Preview_width, int Preview_height, int type,  int rectposnum,String place, int []detectrect, final RecogResult recogToken) throws  Exception {
+    public synchronized void getNANjingCarnum(byte[] data,int Preview_width, int Preview_height, int type,  int rectposnum,String place, int []detectrect, final YYRecogResult recogToken) throws  Exception {
 
         int nplatenum =  liblpr.LprVideo(data ,Preview_width ,Preview_height ,type,detectrect,rectposnum, 0 ,0,place);
         if(nplatenum > 0)
         {
-            String  platenum =  liblpr.GetPlatenum(0) ;
-            recogToken.recogSuccess(platenum,data);
+            recogToken.recogSuccess(data);
         }else{
             recogToken.recogFail();
         }
